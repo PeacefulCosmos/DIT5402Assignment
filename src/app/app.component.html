@@ -1,32 +1,72 @@
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<div>
+    <div>
+        <form [formGroup]="itineraryForm" (ngSubmit)="onSet()">
+  
+            <label>
+              Start Date:
+              <input type="date" formControlName="startDate">
+            </label>
+          
+            <label>
+              End Date:
+              <input type="date" formControlName="endDate">
+            </label>
+            
+            <button type="submit">Set</button>
+        </form>
+        <div *ngIf="invalidMessage">Invalid: {{invalidMessage}}</div>
+    </div>
 
-  <!--- Note that these columns can be defined in any order.
-        The actual rendered columns are set as a property on the row definition" -->
+    <div *ngIf="itineraryDays>0">
+      <div *ngFor="let day of [].constructor(itineraryDays); let i = index" id="table-group">
+        <div>Day {{i+1}}</div>
+        <mat-table #table [dataSource]="dataSource">
+          <!-- Position Column -->
+          <!-- <ng-container matColumnDef="checked">
+            <mat-header-cell *matHeaderCellDef>Check</mat-header-cell>
+            <mat-cell *matCellDef="let element"> 
+              <mat-checkbox [(ngModel)]="element.checked"></mat-checkbox>
+            </mat-cell>
+          </ng-container> -->
+      
+          <!-- Order Column -->
+          <ng-container matColumnDef="order">
+            <mat-header-cell *matHeaderCellDef> Order. </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.order}} </mat-cell>
+          </ng-container>
+      
+          <!-- Spot Column -->
+          <ng-container matColumnDef="spot">
+            <mat-header-cell *matHeaderCellDef> Spot </mat-header-cell>
+            <mat-cell *matCellDef> 
+              <!-- <mat-select style="min-width: 200px;" placeholder="" [(value)]="element.acc_desc" >
+                <mat-option *ngFor="let dep of acc_desc " [value]="dep.acc_desc" >
+                  {{ dep.acc_desc }}
+                </mat-option>
+             </mat-select> -->
+            </mat-cell>
+          </ng-container>
+      
+          <!-- Duration Column -->
+          <ng-container matColumnDef="duration">
+            <mat-header-cell *matHeaderCellDef> Duration </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.duration}} </mat-cell>
+          </ng-container>
+    
+          <!-- Transportation Column -->
+          <ng-container matColumnDef="transport">
+            <mat-header-cell *matHeaderCellDef> Transport </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.transport}} </mat-cell>
+          </ng-container>
+      
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;" 
+          [ngClass]="{hovered: row.hovered, highlighted: row.highlighted}" 
+          (click)="row.highlighted = !row.highlighted" 
+          (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></mat-row>
+        </mat-table>
 
-  <!-- Position Column -->
-  <ng-container matColumnDef="position">
-    <th mat-header-cell *matHeaderCellDef> No. </th>
-    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-  </ng-container>
+      </div>
 
-  <!-- Name Column -->
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
-    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-  </ng-container>
-
-  <!-- Weight Column -->
-  <ng-container matColumnDef="weight">
-    <th mat-header-cell *matHeaderCellDef> Weight </th>
-    <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
-  </ng-container>
-
-  <!-- Symbol Column -->
-  <ng-container matColumnDef="symbol">
-    <th mat-header-cell *matHeaderCellDef> Symbol </th>
-    <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+    </div>
+</div>
